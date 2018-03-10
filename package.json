@@ -1,0 +1,25 @@
+{
+  "name": "tdd-solidity-intro",
+  "version": "0.0.1",
+  "description": "",
+  "main": "truffle-config.js",
+  "dependencies": {
+    "truffle": "^4.0.6",
+    "zeppelin-solidity": "1.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichalZalecki/tdd-solidity-intro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MichalZalecki/tdd-solidity-intro/issues"
+  },
+  "homepage": "https://github.com/MichalZalecki/tdd-solidity-intro#readme"
+}

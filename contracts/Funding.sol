@@ -1,7 +1,7 @@
 // contracts/Funding.sol
 pragma solidity ^0.4.17;
 
-import "./Ownable.sol";
+import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract Funding is Ownable {
   uint public raised;
