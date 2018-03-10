@@ -2,8 +2,11 @@
 pragma solidity ^0.4.17;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Funding is Ownable {
+  using SafeMath for uint;
+
   uint public raised;
   uint public goal;
   uint public finishesAt;
@@ -45,8 +48,8 @@ contract Funding is Ownable {
   }
 
   function donate() public onlyNotFinished payable {
-    balances[msg.sender] += msg.value;
-    raised += msg.value;
+    balances[msg.sender] = balances[msg.sender].add(msg.value);
+    raised = raised.add(msg.value);
   }
 
   function withdraw() public onlyOwner onlyFunded {
