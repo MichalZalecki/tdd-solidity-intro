@@ -1,5 +1,5 @@
 // test/FundingTest.js
-const { increaseTime } = require("./utils");
+const { increaseTime, spy } = require("./utils");
 const Funding = artifacts.require("Funding");
 
 const FINNEY = 10**15;
@@ -29,6 +29,14 @@ contract("Funding", accounts => {
     await funding.donate({ from: secondAccount, value: 3 * FINNEY });
     assert.equal(await funding.balances.call(firstAccount), 5 * FINNEY);
     assert.equal(await funding.balances.call(secondAccount), 18 * FINNEY);
+  });
+
+  it("emits events once donation happens", async () => {
+    await funding.donate({ from: firstAccount, value: 1 * FINNEY });
+    await funding.donate({ from: secondAccount, value: 5 * FINNEY });
+    const calls = await spy(2, funding.allEvents.bind(funding, { fromBlock: 0 }));
+    assert.deepEqual(calls[0].args, { sender: firstAccount, value: web3.toBigNumber(1 * FINNEY) });
+    assert.deepEqual(calls[1].args, { sender: secondAccount, value: web3.toBigNumber(5 * FINNEY) });
   });
 
   it("finishes fundraising when time is up", async () => {

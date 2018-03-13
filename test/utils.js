@@ -27,3 +27,21 @@ module.exports.increaseTime = function increaseTime(duration) {
     );
   });
 };
+
+module.exports.spy = function spy(waitFor, fn) {
+  let called = 0;
+  const calls = [];
+  const timeout = 2000;
+  return new Promise((resolve, reject) => {
+    const timeId = setTimeout(() => reject(`Spy timeout (${timeout}ms). Waiting for ${waitFor} calls but called ${calls.length} times.`), timeout);
+    const event = fn((error, log) => {
+      if (error) reject(error);
+      calls.push(log)
+      if (++called === waitFor) {
+        clearTimeout(timeId);
+        event.stopWatching();
+        resolve(calls);
+      };
+    });
+  });
+}

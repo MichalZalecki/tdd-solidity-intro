@@ -1,5 +1,5 @@
 // contracts/Funding.sol
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.19;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
@@ -11,6 +11,8 @@ contract Funding is Ownable {
   uint public goal;
   uint public finishesAt;
   mapping(address => uint) public balances;
+
+  event Donated(address sender, uint value);
 
   modifier onlyNotFinished() {
     require(!isFinished());
@@ -50,6 +52,7 @@ contract Funding is Ownable {
   function donate() public onlyNotFinished payable {
     balances[msg.sender] = balances[msg.sender].add(msg.value);
     raised = raised.add(msg.value);
+    Donated(msg.sender, msg.value);
   }
 
   function withdraw() public onlyOwner onlyFunded {
