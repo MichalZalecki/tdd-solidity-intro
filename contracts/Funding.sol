@@ -1,5 +1,5 @@
 // contracts/Funding.sol
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.19;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
@@ -53,7 +53,7 @@ contract Funding is Ownable {
   }
 
   function withdraw() public onlyOwner onlyFunded {
-    owner.transfer(this.balance);
+    owner.transfer(address(this).balance);
   }
 
   function refund() public onlyFinished onlyNotFunded {
