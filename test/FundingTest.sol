@@ -1,5 +1,5 @@
 // contracts/FundingTest.sol
-pragma solidity ^0.4.19;
+pragma solidity 0.4.24;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
@@ -39,26 +39,26 @@ contract FundingTest {
 
   function testDonatingAfterTimeIsUp() public {
     funding = new Funding(0, 100 finney);
-    bool result = funding.call.value(10 finney)(bytes4(keccak256("donate()")));
+    bool result = address(funding).call.value(10 finney)(bytes4(keccak256("donate()")));
     Assert.equal(result, false, "Allows for donations when time is up");
   }
 
   function testWithdrawalByAnOwner() public {
-    uint initBalance = this.balance;
+    uint initBalance = address(this).balance;
     funding.donate.value(50 finney)();
-    bool result = funding.call(bytes4(keccak256("withdraw()")));
+    bool result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, false, "Allows for withdrawal before reaching the goal");
     funding.donate.value(50 finney)();
-    Assert.equal(this.balance, initBalance - 100 finney, "Balance before withdrawal doesn't correspond to the sum of donations");
-    result = funding.call(bytes4(keccak256("withdraw()")));
+    Assert.equal(address(this).balance, initBalance - 100 finney, "Balance before withdrawal doesn't correspond to the sum of donations");
+    result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, true, "Doesn't allow for withdrawal after reaching the goal");
-    Assert.equal(this.balance, initBalance, "Balance after withdrawal doesn't correspond to the sum of donations");
+    Assert.equal(address(this).balance, initBalance, "Balance after withdrawal doesn't correspond to the sum of donations");
   }
 
   function testWithdrawalByNotAnOwner() public {
     funding = Funding(DeployedAddresses.Funding());
     funding.donate.value(100 finney)();
-    bool result = funding.call(bytes4(keccak256("withdraw()")));
+    bool result = address(funding).call(bytes4(keccak256("withdraw()")));
     Assert.equal(result, false, "Allows for withdrawal by not an owner");
   }
 }
