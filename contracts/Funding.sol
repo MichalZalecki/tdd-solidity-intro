@@ -1,8 +1,8 @@
 // contracts/Funding.sol
-pragma solidity ^0.4.19;
+pragma solidity 0.4.24;
 
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Funding is Ownable {
   using SafeMath for uint;
@@ -34,7 +34,7 @@ contract Funding is Ownable {
 
   function () public payable {}
 
-  function Funding(uint _duration, uint _goal) public {
+  constructor(uint _duration, uint _goal) public {
     finishesAt = now + _duration;
     goal = _goal;
   }
